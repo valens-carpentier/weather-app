@@ -2,62 +2,32 @@ import { getWeatherData } from "./getWeatherData.js";
 
 async function displayData(location) {
     const weatherData = await getWeatherData(location);
+
+    document.getElementById('city').textContent = weatherData.address;
+    document.getElementById('temperature').textContent = `${Math.round(weatherData.currentConditions?.temp ?? 'N/A')}°`;
+    document.getElementById('condition').textContent = weatherData.currentConditions?.conditions ?? 'N/A';
     
-    const currentTemp = document.createElement("p");
-    currentTemp.textContent = `Current temperature: ${weatherData.currentConditions?.temp ?? 'N/A'}°C`;
-    document.body.appendChild(currentTemp);
+    //const weatherIcon = document.getElementById('weather-icon');
+    //weatherIcon.src = `https://www.visualcrossing.com/weather-icons/${weatherData.currentConditions?.icon}.svg`;
+    //weatherIcon.alt = weatherData.currentConditions?.conditions ?? 'Weather icon';
 
-    const currentCity = document.createElement("p");
-    currentCity.textContent = `Current city: ${weatherData.address}`;
-    document.body.appendChild(currentCity);
+    const detailsContainer = document.querySelector('.weather-details');
+    detailsContainer.innerHTML = '';
 
-    const currentTime = document.createElement("p");
-    currentTime.textContent = `Current time: ${weatherData.currentConditions?.datetime}`;
-    document.body.appendChild(currentTime);
+    const details = [
+        { label: 'Wind', value: `${weatherData.currentConditions?.windspeed ?? 'N/A'} km/h` },
+        { label: 'Humidity', value: `${weatherData.currentConditions?.humidity ?? 'N/A'}%` },
+        { label: 'Visibility', value: `${weatherData.currentConditions?.visibility ?? 'N/A'} km` },
+        { label: 'Sunrise', value: weatherData.currentConditions?.sunrise ?? 'N/A' },
+        { label: 'Sunset', value: weatherData.currentConditions?.sunset ?? 'N/A' },
+        { label: 'Precipitation', value: `${weatherData.currentConditions?.precip ?? 'N/A'} mm` }
+    ];
 
-    const currentConditions = document.createElement("p");
-    currentConditions.textContent = `Current conditions: ${weatherData.currentConditions?.conditions ?? 'N/A'}`;
-    document.body.appendChild(currentConditions);
-
-    const currentWindSpeed = document.createElement("p");
-    currentWindSpeed.textContent = `Current wind speed: ${weatherData.currentConditions?.windspeed ?? 'N/A'} Km/h`;
-    document.body.appendChild(currentWindSpeed);
-
-    const currentWindDirection = document.createElement("p");
-    currentWindDirection.textContent = `Current wind direction: ${weatherData.currentConditions?.winddir ?? 'N/A'}`;
-    document.body.appendChild(currentWindDirection);
-
-    const currentHumidity = document.createElement("p");
-    currentHumidity.textContent = `Current humidity: ${weatherData.currentConditions?.humidity ?? 'N/A'}%`;
-    document.body.appendChild(currentHumidity);
-
-    const currentVisibility = document.createElement("p");
-    currentVisibility.textContent = `Current visibility: ${weatherData.currentConditions?.visibility ?? 'N/A'} Km`;
-    document.body.appendChild(currentVisibility);
-
-    const currentSunrise = document.createElement("p");
-    currentSunrise.textContent = `Current sunrise: ${weatherData.currentConditions?.sunrise ?? 'N/A'}`;
-    document.body.appendChild(currentSunrise);
-
-    const currentSunset = document.createElement("p");
-    currentSunset.textContent = `Current sunset: ${weatherData.currentConditions?.sunset ?? 'N/A'}`;
-    document.body.appendChild(currentSunset);
-
-    const currentDew = document.createElement("p");
-    currentDew.textContent = `Dew Point: ${weatherData.currentConditions?.dew ?? 'N/A'}°C`;
-    document.body.appendChild(currentDew);
-
-    const currentPrecip = document.createElement("p");
-    currentPrecip.textContent = `Precipitation: ${weatherData.currentConditions?.precip ?? 'N/A'} mm`;
-
-    const currentPrecipprob = document.createElement("p");
-    currentPrecipprob.textContent = `Precipitation probability: ${weatherData.currentConditions?.precipprob ?? 'N/A'}%`;
-    document.body.appendChild(currentPrecipprob);
-
-    const currentIcon = document.createElement("img");
-    currentIcon.src = `https://www.visualcrossing.com/weather-icons/${weatherData.currentConditions?.icon}.svg`;
-    document.body.appendChild(currentIcon);
-    
+    details.forEach(detail => {
+        const detailElement = document.createElement('p');
+        detailElement.innerHTML = `<strong>${detail.label}:</strong> ${detail.value}`;
+        detailsContainer.appendChild(detailElement);
+    });
 }
 
 export { displayData };

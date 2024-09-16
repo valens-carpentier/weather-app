@@ -8,19 +8,3 @@ async function getWeatherData(location) {
 }
 
 export { getWeatherData };
-
-
-/*
-I want to display the following: 
-- Current temperature in celsius
-- Current city
-- Current date
-- Current conditions
-- Current wind
-- Current humidity
-- Current air quality
-- Current visibility
-- Current sunrise
-- Current sunset
-
-*/
